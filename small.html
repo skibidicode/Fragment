@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <style> 
+ 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+  
+  .major-mono-display-regular {
+  font-family: "Major Mono Display", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+    #container {
+      background: #564592;
+      color: white;
+      width: 200px;
+      z-index: 99999999999999999;
+      border-radius: 5px;
+      padding: 5px;
+    }
+
+    #ConsInput {
+      padding: 5px;
+      height: 50%;
+      border: 0px;
+      border-radius: 5px;
+      background: #32322C;
+      color: white;
+    }
+
+    #ConsInput::placeholder {
+      color: white;
+    }
+
+#buttons {
+  padding: 2.5px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+button {
+  all: unset;
+  background: unset;
+  color: white;
+  font-family: "Lucida Console", Monospace;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  flex: 1 1 0;
+  text-align: center;
+  min-width: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+    button:hover {
+      color: #FB3640;
+    }
+#title {
+  all: unset; 
+  font-size: 13px;
+  display: inline-block;
+  color: #162521; font-family: 'Major Mono Display', Monospace;
+  letter-spacing: -1.5px; 
+  text-align: center;
+}
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="buttons">
+    <h6 id="title">
+      Fragment <br>
+      <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
+    </h6>
+    
+    <button type="button" id="showOutput"><span class="material-symbols-outlined">terminal</span></button>
+    <button type="button" id="maximize"><span class="material-symbols-outlined">fullscreen</span></button>
+    <button type="button" id="minimize"><span class="material-symbols-outlined">close_fullscreen</span></button>
+    <button type="button" id="help"><span class="material-symbols-outlined">info</span></button>
+  </div>
+  <input type="text" id="ConsInput" placeholder="Press enter to send command...">
+</div>
+
+
+</body>
+</html>
 
