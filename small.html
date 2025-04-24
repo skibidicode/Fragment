@@ -22,13 +22,25 @@
   font-style: normal;
 }
 
-    #container {
+    #consoleContainer , #terminalOut{
+      all: unset;
       background: #564592;
       color: white;
       width: 200px;
       z-index: 99999999999999999;
       border-radius: 5px;
       padding: 5px;
+      position:fixed;
+      bottom: 10px;
+      right: 10px;
+    }
+    #terminalOut {
+    top: 10px;
+    left: 10px;
+    height: 100px;
+    opacity: 50%;
+    background: #F5F749;
+    color: #32322C;
     }
 
     #ConsInput {
@@ -36,15 +48,15 @@
       height: 50%;
       border: 0px;
       border-radius: 5px;
-      background: #32322C;
-      color: white;
+      background: #EFF6EE;
+      color: #564592;
     }
 
     #ConsInput::placeholder {
-      color: white;
+      color: #564592;
     }
 
-#buttons {
+#functionButtons{
   padding: 2.5px;
   display: flex;
   gap: 5px;
@@ -52,10 +64,10 @@
   justify-content: space-between;
 }
 
-button {
+#consoleEditor, #consoleInspect, #consoleUnlock, #consoleHelp{
   all: unset;
   background: unset;
-  color: white;
+  color: #EFF6EE;
   font-family: "Lucida Console", Monospace;
   border-radius: 2px;
   display: flex;
@@ -69,14 +81,16 @@ button {
   cursor: pointer;
 }
 
-    button:hover {
-      color: #FB3640;
+
+#consoleEditor:hover, #consoleInspect:hover, #consoleUnlock:hover, #consoleHelp:hover{
+      color: #FE5D26;
+      transition: 0.2s;
     }
 #title {
   all: unset; 
   font-size: 14.5px;
   display: inline-block;
-  color: #162521; font-family: 'Major Mono Display', Monospace;
+  color: #D8B4E2; font-family: 'Major Mono Display', Monospace;
   letter-spacing: -1.5px; 
   text-align: center;
 }
@@ -84,23 +98,23 @@ button {
 </head>
 <body>
 
-<div id="container">
-  <div id="buttons">
-    <h6 id="title">
-      Fragment <br>
+<div id="consoleContainer">
+  <div id="functionButtons">
+    <h6 id="title" style="font-weight: bold;">
+      fragment <br>
       <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
     </h6>
     
-    <button type="button" id="showOutput"><span class="material-symbols-outlined">terminal</span></button>
-    <button type="button" id="showOutput"><span class="material-symbols-outlined">code</span></button>
-    <button type="button" id="openEditor"><span class="material-symbols-outlined">fullscreen</span></button>
-    <button type="button" id="minimize"><span class="material-symbols-outlined">lock_open</span></button>
-    <button type="button" id="help"><span class="material-symbols-outlined">info</span></button>
+    <button type="button" id="consoleEditor"><span class="material-symbols-outlined">terminal</span></button>
+    <button type="button" id="consoleInspect"><span class="material-symbols-outlined">pageview</span></button>
+    <button type="button" id="consoleUnlock"><span class="material-symbols-outlined">lock_open</span></button>
+    <button type="button" id="consoleHelp"><span class="material-symbols-outlined">info</span></button>
 
   </div>
+  <div id="sendBar"> 
   <input type="text" id="ConsInput" autocomplete="off" placeholder="Press enter to send command...">
+  </div>
 </div>
-
 
 </body>
 </html>
