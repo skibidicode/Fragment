@@ -10,6 +10,8 @@
 
   <!-- Hinting (autocomplete) CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
+    <!-- Linting CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
 
   <!-- CodeMirror core -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
@@ -24,7 +26,14 @@
   <!-- Bracket closing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
   
+  
+  
+  <!-- Linting core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/javascript-lint.min.js"></script>
 
+  <!-- JSHint itself (for detecting JS errors) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js"></script>
 
 
 
@@ -35,10 +44,13 @@
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
   <style> 
+  
 .CodeMirror {
-  height: auto;
+  height: 100%;
   border: 1px solid #ccc;
   font-size: 16px;
+  width: 100%;
+  
 }
 .material-symbols-outlined {
   font-variation-settings:
@@ -90,11 +102,34 @@
     }
 
 #functionButtons{
+  all: unset;
   padding: 2.5px;
   display: flex;
   gap: 5px;
   flex-wrap: nowrap;
   justify-content: space-between;
+}
+#functionButtonsBig {
+  all:unset;
+  padding: 2.5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#functionButtonsBig h6 {
+  margin: 0;
+  flex: 1;
+  text-align: left; /* Aligns the logo (title) to the left */
+}
+
+#functionButtonsBig button {
+  all: unset;
+  margin-left: 10px;
+  background: unset;
+  color: #EFF6EE;
+  font-family: "Lucida Console", Monospace;
+  border-radius: 2px;
 }
 
 #consoleEditor, #consoleInspect, #consoleUnlock, #consoleHelp{
@@ -115,7 +150,7 @@
 }
 
 
-#consoleEditor:hover, #consoleInspect:hover, #consoleUnlock:hover, #consoleHelp:hover{
+#consoleEditor:hover, #consoleInspect:hover, #consoleUnlock:hover, #consoleHelp:hover, #functionButtonsBig button:hover{
       color: #FE5D26;
       transition: 0.2s;
     }
@@ -126,6 +161,38 @@
   color: #D8B4E2; font-family: 'Major Mono Display', Monospace;
   letter-spacing: -1.5px; 
   text-align: center;
+}
+
+
+
+
+
+#bigEditContainer{
+      all: unset;
+      background: #564592;
+      color: white;
+      width: 500px;
+      height: 300px;
+      z-index: 99999999999999999;
+      border-radius: 5px;
+      padding: 5px;
+      position:fixed;
+      top: 10px;
+      left: 10px;
+}
+
+#codeMirrorCont {
+  all: unset;
+  background: blue;
+  width: 100%;
+  height: 88%;
+  display: block;
+}
+
+
+
+#bigEdit {
+  display: none;
 }
   </style>
 </head>
@@ -138,7 +205,7 @@
       <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
     </h6>
     
-    <button type="button" id="consoleEditor"><span class="material-symbols-outlined">terminal</span></button>
+    <button type="button" id="consoleEditor"><span class="material-symbols-outlined">code_blocks</span></button>
     <button type="button" id="consoleInspect"><span class="material-symbols-outlined">pageview</span></button>
     <button type="button" id="consoleUnlock"><span class="material-symbols-outlined">lock_open</span></button>
     <button type="button" id="consoleHelp"><span class="material-symbols-outlined">info</span></button>
@@ -148,6 +215,71 @@
   <input type="text" id="ConsInput" autocomplete="off" placeholder="Press enter to send command...">
   </div>
 </div>
+
+
+
+<!--LARGE EDITOR WITH SYNTAX AND STUFF -->
+
+
+
+
+
+<div id="bigEditContainer" style="display: none;">
+  <div id="functionButtonsBig">
+    <h6 id="title" style="font-weight: bold;">
+      fragment
+      <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
+    </h6>
+        <button type="button" id="editorExecute"><span class="material-symbols-outlined">chevron_forward</span></button>
+    <button type="button" id="editorConsole"><span class="material-symbols-outlined">terminal</span></button>
+    <button type="button" id="editorInspect"><span class="material-symbols-outlined">pageview</span></button>
+    <button type="button" id="editorUnlock"><span class="material-symbols-outlined">lock_open</span></button>
+    <button type="button" id="editorHelp"><span class="material-symbols-outlined">info</span></button>
+
+
+  </div>
+<div id="codeMirrorCont">
+
+
+<textarea id="bigEdit">//write your JS code here...</textarea>
+<p>this is in codemirror</p>
+</div>
+<p>test</p>
+</div>
+
+  <script>
+    const editor = CodeMirror.fromTextArea(document.getElementById("bigEdit"), {
+      mode: "javascript",
+      theme: "dracula",
+      lineNumbers: true,
+      autoCloseBrackets: true,
+      gutters: ["CodeMirror-lint-markers"],
+      lint: true,
+      extraKeys: {
+        "Tab": "autocomplete"
+      }
+    });
+
+    // Trigger autocomplete as you type (on every key press)
+    editor.on("inputRead", function(cm, event) {
+      if (!cm.state.completionActive && /[\w.]$/.test(event.text[0])) {
+        CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
+      }
+    });
+    
+
+    
+    
+    const editButton = document.getElementById("consoleEditor");
+    const console = document.getElementById("consoleContainer");
+    const htmlEditor = document.getElementById("bigEditContainer");
+    editButton.onclick = function(){
+    htmlEditor.style.display = "block";
+    console.style.display = "none";
+    editor.refresh();
+    }
+
+  </script>
 
 </body>
 </html>
