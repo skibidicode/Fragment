@@ -130,6 +130,7 @@
   color: #EFF6EE;
   font-family: "Lucida Console", Monospace;
   border-radius: 2px;
+  transition: 0.2s;
 }
 
 #consoleEditor, #consoleInspect, #consoleUnlock, #consoleHelp{
@@ -147,6 +148,7 @@
   min-width: 0;
   box-sizing: border-box;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 
@@ -173,7 +175,6 @@
       color: white;
       width: 500px;
       height: 300px;
-      z-index: 99999999999999999;
       border-radius: 5px;
       padding: 5px;
       position:fixed;
@@ -271,11 +272,11 @@
     
     
     const editButton = document.getElementById("consoleEditor");
-    const console = document.getElementById("consoleContainer");
+    const htmlConsole = document.getElementById("consoleContainer");
     const htmlEditor = document.getElementById("bigEditContainer");
     editButton.onclick = function(){
     htmlEditor.style.display = "block";
-    console.style.display = "none";
+    htmlConsole.style.display = "none";
     editor.refresh();
     }
 
