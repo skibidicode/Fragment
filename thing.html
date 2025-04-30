@@ -154,7 +154,7 @@
 }
 
 
-#consoleEditor:hover, #consoleInspect:hover, #consoleUnlock:hover, #consoleHelp:hover, #functionButtonsBig button:hover{
+#consoleEditor:hover, #consoleClose:hover, #consoleUnlock:hover, #consoleHelp:hover, #functionButtonsBig button:hover{
       color: #FE5D26;
       transition: 0.2s;
     }
@@ -210,7 +210,7 @@
     
     <button type="button" id="consoleEditor"><span class="material-symbols-outlined">code_blocks</span></button>
     <button type="button" id="consoleClose"><span class="material-symbols-outlined">close</span></button>
-    <button type="button" id="consoleUnlock"><span class="material-symbols-outlined">lock_open</span></button>
+    <button type="button" id="consoleUnlock"><span class="material-symbols-outlined">lock</span></button>
     <button type="button" id="consoleHelp"><span class="material-symbols-outlined">info</span></button>
 
   </div>
@@ -236,7 +236,7 @@
         <button type="button" id="editorExecute"><span class="material-symbols-outlined">chevron_forward</span></button>
     <button type="button" id="editorConsole"><span class="material-symbols-outlined">terminal</span></button>
     <button type="button" id="editorFullscreen"><span class="material-symbols-outlined">fullscreen</span></button>
-    <button type="button" id="editorUnlock"><span class="material-symbols-outlined">lock_open</span></button>
+    <button type="button" id="editorUnlock"><span class="material-symbols-outlined">lock</span></button>
     <button type="button" id="editorHelp"><span class="material-symbols-outlined">info</span></button>
 
 
@@ -269,6 +269,7 @@
     
 
     let isFullscreen = false;
+    let isConsoleLocked = true;
     
     const editButton = document.getElementById("consoleEditor");
     const closeButton = document.getElementById("consoleClose");
@@ -294,6 +295,21 @@
     htmlConsole.style.display = "none";
     editor.refresh();
     }
+    closeButton.onclick = function(){
+    	htmlEditor.remove();
+        htmlConsole.remove();
+        throw new Error("Stopped Fragment");
+    }
+    consoleUnlock.onclick = function(){
+    	if (isConsoleLocked === true){
+    		consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+            isConsoleLocked = false;
+        }else{
+        	consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+            isConsoleLocked = true;
+        }
+   	}
+    
     
     
     
@@ -325,6 +341,10 @@
     	}
     }
     
+    exec.onclick = function(){
+    	const fullCode = editor.getValue();
+        eval(fullCode);
+    }
 
   </script>
 
