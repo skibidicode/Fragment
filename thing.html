@@ -270,6 +270,7 @@
 
     let isFullscreen = false;
     let isConsoleLocked = true;
+    let isEditorLocked = true;
     
     const editButton = document.getElementById("consoleEditor");
     const closeButton = document.getElementById("consoleClose");
@@ -345,6 +346,15 @@
     	const fullCode = editor.getValue();
         eval(fullCode);
     }
+    editorUnlock.onclick = function(){
+    	if (isEditorLocked === true){
+    		editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+            isEditorLocked = false;
+        }else{
+        	editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+            isEditorLocked = true;
+        }
+   }
 
   </script>
 
