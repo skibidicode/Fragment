@@ -133,7 +133,7 @@
   transition: 0.2s;
 }
 
-#consoleEditor, #consoleInspect, #consoleUnlock, #consoleHelp{
+#consoleEditor, #consoleClose, #consoleUnlock, #consoleHelp{
   all: unset;
   background: unset;
   color: #EFF6EE;
@@ -207,7 +207,7 @@
     </h6>
     
     <button type="button" id="consoleEditor"><span class="material-symbols-outlined">code_blocks</span></button>
-    <button type="button" id="consoleInspect"><span class="material-symbols-outlined">pageview</span></button>
+    <button type="button" id="consoleClose"><span class="material-symbols-outlined">close</span></button>
     <button type="button" id="consoleUnlock"><span class="material-symbols-outlined">lock_open</span></button>
     <button type="button" id="consoleHelp"><span class="material-symbols-outlined">info</span></button>
 
@@ -233,7 +233,7 @@
     </h6>
         <button type="button" id="editorExecute"><span class="material-symbols-outlined">chevron_forward</span></button>
     <button type="button" id="editorConsole"><span class="material-symbols-outlined">terminal</span></button>
-    <button type="button" id="editorInspect"><span class="material-symbols-outlined">pageview</span></button>
+    <button type="button" id="editorFullscreen"><span class="material-symbols-outlined">fullscreen</span></button>
     <button type="button" id="editorUnlock"><span class="material-symbols-outlined">lock_open</span></button>
     <button type="button" id="editorHelp"><span class="material-symbols-outlined">info</span></button>
 
@@ -243,9 +243,7 @@
 
 
 <textarea id="bigEdit">//write your JS code here...</textarea>
-<p>this is in codemirror</p>
 </div>
-<p>test</p>
 </div>
 
   <script>
@@ -271,15 +269,47 @@
     
     
     const editButton = document.getElementById("consoleEditor");
+    const closeButton = document.getElementById("consoleClose");
+    const consoleUnlock = document.getElementById("ConsoleUnlock");
+    const info = document.getElementById("consoleHelp");
+    
+    const exec = document.getElementById("editorExecute");
+    const consoleButton = document.getElementById("editorConsole");
+    const fullscreen = document.getElementById("editorFullscreen");
+    const editorUnlock = document.getElementById("editorUnlock");
+    const info2 = document.getElementById("editorHelp");
+    
     const htmlConsole = document.getElementById("consoleContainer");
     const htmlEditor = document.getElementById("bigEditContainer");
+
+   
+    
+    //console buttons
+    
     editButton.onclick = function(){
     htmlEditor.style.display = "block";
     htmlConsole.style.display = "none";
     editor.refresh();
     }
+    
+    
+    
+    //editor buttons
+    
+    consoleButton.onclick = function(){
+    htmlConsole.style.display = "block";
+    htmlEditor.style.display = "none";
+    }
+    fullscreen.onclick = function(){
+    //make: bool for fullscreen or minimize and make minimize work
+    htmlEditor.style.width = "100%";
+    htmlEditor.style.height = "100%";
+    fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
+    }
+    
 
   </script>
 
 </body>
 </html>
+
