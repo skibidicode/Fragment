@@ -5,10 +5,10 @@
   <!-- Core CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
 
-  <!-- Theme (optional) -->
+  <!-- Theme -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
 
-  <!-- Hinting (autocomplete) CSS -->
+  <!-- Hinting CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
     <!-- Linting CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
@@ -19,7 +19,7 @@
   <!-- Language mode -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
 
-  <!-- Hinting (autocomplete) JS -->
+  <!-- Hinting JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/javascript-hint.min.js"></script>
 
@@ -32,7 +32,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/javascript-lint.min.js"></script>
 
-  <!-- JSHint itself (for detecting JS errors) -->
+  <!-- JSHint -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js"></script>
 
 
@@ -120,7 +120,7 @@
 #functionButtonsBig h6 {
   margin: 0;
   flex: 1;
-  text-align: left; /* Aligns the logo (title) to the left */
+  text-align: left;
 }
 
 #functionButtonsBig button {
@@ -261,7 +261,6 @@
       }
     });
 
-    // Trigger autocomplete as you type (on every key press)
     editor.on("inputRead", function(cm, event) {
       if (!cm.state.completionActive && /[\w.]$/.test(event.text[0])) {
         CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
