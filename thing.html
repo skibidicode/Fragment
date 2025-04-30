@@ -108,6 +108,7 @@
   gap: 5px;
   flex-wrap: nowrap;
   justify-content: space-between;
+  
 }
 #functionButtonsBig {
   all:unset;
@@ -115,6 +116,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 }
 
 #functionButtonsBig h6 {
@@ -266,11 +268,11 @@
     });
     
 
-    
+    let isFullscreen = false;
     
     const editButton = document.getElementById("consoleEditor");
     const closeButton = document.getElementById("consoleClose");
-    const consoleUnlock = document.getElementById("ConsoleUnlock");
+    const consoleUnlock = document.getElementById("consoleUnlock");
     const info = document.getElementById("consoleHelp");
     
     const exec = document.getElementById("editorExecute");
@@ -281,6 +283,7 @@
     
     const htmlConsole = document.getElementById("consoleContainer");
     const htmlEditor = document.getElementById("bigEditContainer");
+	
 
    
     
@@ -300,11 +303,26 @@
     htmlConsole.style.display = "block";
     htmlEditor.style.display = "none";
     }
-    fullscreen.onclick = function(){
-    //make: bool for fullscreen or minimize and make minimize work
-    htmlEditor.style.width = "100%";
-    htmlEditor.style.height = "100%";
-    fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
+
+	fullscreen.onclick = function(){
+
+    	if (isFullscreen === false) {
+
+    		htmlEditor.style.width = "100%";
+    		htmlEditor.style.height = "100%";
+    		fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
+    		htmlEditor.style.top = "0px";
+    		htmlEditor.style.left = "0px";
+    		isFullscreen = true;
+    	}else{
+
+    		htmlEditor.style.width = "500px";
+    		htmlEditor.style.height = "300px";
+    		fullscreen.innerHTML = `<span class="material-symbols-outlined">fullscreen</span>`;
+    		htmlEditor.style.top = "10px";
+    		htmlEditor.style.left = "10px";
+    		isFullscreen = false;
+    	}
     }
     
 
