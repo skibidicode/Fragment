@@ -75,9 +75,10 @@
       z-index: 99999999999999999;
       border-radius: 5px;
       padding: 5px;
-      position:fixed;
+      position:absolute;
       bottom: 10px;
       right: 10px;
+      height: auto;
     }
     #terminalOut {
     top: 10px;
@@ -101,7 +102,7 @@
       color: #564592;
     }
 
-#functionButtons{
+#consoleContainerheader{
   all: unset;
   padding: 2.5px;
   display: flex;
@@ -110,22 +111,21 @@
   justify-content: space-between;
   
 }
-#functionButtonsBig {
+#bigEditContainerheader {
   all:unset;
   padding: 2.5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
 }
 
-#functionButtonsBig h6 {
+#bigEditContainerheader h6 {
   margin: 0;
   flex: 1;
   text-align: left;
 }
 
-#functionButtonsBig button {
+#bigEditContainerheader button {
   all: unset;
   margin-left: 10px;
   background: unset;
@@ -133,6 +133,7 @@
   font-family: "Lucida Console", Monospace;
   border-radius: 2px;
   transition: 0.2s;
+  cursor: pointer;
 }
 
 #consoleEditor, #consoleClose, #consoleUnlock, #consoleHelp{
@@ -154,7 +155,7 @@
 }
 
 
-#consoleEditor:hover, #consoleClose:hover, #consoleUnlock:hover, #consoleHelp:hover, #functionButtonsBig button:hover{
+#consoleEditor:hover, #consoleClose:hover, #consoleUnlock:hover, #consoleHelp:hover, #bigEditContainerheader button:hover{
       color: #FE5D26;
       transition: 0.2s;
     }
@@ -179,7 +180,7 @@
       height: 300px;
       border-radius: 5px;
       padding: 5px;
-      position:fixed;
+      position:absolute;
       top: 10px;
       left: 10px;
 }
@@ -202,16 +203,16 @@
 <body>
 
 <div id="consoleContainer">
-  <div id="functionButtons">
+  <div id="consoleContainerheader">
     <h6 id="title" style="font-weight: bold;">
       fragment <br>
       <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
     </h6>
     
-    <button type="button" id="consoleEditor"><span class="material-symbols-outlined">code_blocks</span></button>
-    <button type="button" id="consoleClose"><span class="material-symbols-outlined">close</span></button>
-    <button type="button" id="consoleUnlock"><span class="material-symbols-outlined">lock</span></button>
-    <button type="button" id="consoleHelp"><span class="material-symbols-outlined">info</span></button>
+    <button type="button" id="consoleEditor" title="open large editor"><span class="material-symbols-outlined">code_blocks</span></button>
+    <button type="button" id="consoleClose" title="close console"><span class="material-symbols-outlined">close</span></button>
+    <button type="button" id="consoleUnlock" title="unlock console position"><span class="material-symbols-outlined">lock</span></button>
+    <button type="button" id="consoleHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
 
   </div>
   <div id="sendBar"> 
@@ -228,16 +229,16 @@
 
 
 <div id="bigEditContainer" style="display: none;">
-  <div id="functionButtonsBig">
+  <div id="bigEditContainerheader">
     <h6 id="title" style="font-weight: bold;">
       fragment
       <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
     </h6>
-        <button type="button" id="editorExecute"><span class="material-symbols-outlined">chevron_forward</span></button>
-    <button type="button" id="editorConsole"><span class="material-symbols-outlined">terminal</span></button>
-    <button type="button" id="editorFullscreen"><span class="material-symbols-outlined">fullscreen</span></button>
-    <button type="button" id="editorUnlock"><span class="material-symbols-outlined">lock</span></button>
-    <button type="button" id="editorHelp"><span class="material-symbols-outlined">info</span></button>
+        <button type="button" id="editorExecute" title="execute"><span class="material-symbols-outlined">rocket_launch</span></button>
+    <button type="button" id="editorConsole" title="open console and close editor"><span class="material-symbols-outlined">terminal</span></button>
+    <button type="button" id="editorFullscreen" title="fullscreen"><span class="material-symbols-outlined">fullscreen</span></button>
+    <button type="button" id="editorUnlock" title="unlock editor position"><span class="material-symbols-outlined">lock</span></button>
+    <button type="button" id="editorHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
 
 
   </div>
@@ -266,6 +267,102 @@
         CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
       }
     });
+    
+    
+    /*making stuff be able to be dragged*/
+    
+    //this first one is for the big editor-------------------------------------
+    
+    // Make the DIV element draggable:
+dragElement(document.getElementById("bigEditContainer"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+    
+    
+//----------------------------this is for console drag--------------
+// Make the DIV element draggable:
+dragElement(document.getElementById("consoleContainer"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+    
     
 
     let isFullscreen = false;
@@ -304,9 +401,11 @@
     consoleUnlock.onclick = function(){
     	if (isConsoleLocked === true){
     		consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+            consoleUnlock.title = "lock console position";
             isConsoleLocked = false;
         }else{
         	consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+            consoleUnlock.title = "unlock console position";
             isConsoleLocked = true;
         }
    	}
@@ -324,10 +423,10 @@
 	fullscreen.onclick = function(){
 
     	if (isFullscreen === false) {
-
     		htmlEditor.style.width = "100%";
     		htmlEditor.style.height = "100%";
     		fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
+            fullscreen.title = "windowed";
     		htmlEditor.style.top = "0px";
     		htmlEditor.style.left = "0px";
     		isFullscreen = true;
@@ -338,6 +437,7 @@
     		fullscreen.innerHTML = `<span class="material-symbols-outlined">fullscreen</span>`;
     		htmlEditor.style.top = "10px";
     		htmlEditor.style.left = "10px";
+            fullscreen.title = "fullscreen";
     		isFullscreen = false;
     	}
     }
@@ -349,9 +449,11 @@
     editorUnlock.onclick = function(){
     	if (isEditorLocked === true){
     		editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+            editorUnlock.title = "lock editor position";
             isEditorLocked = false;
         }else{
         	editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+            editorUnlock.title = "unlock editor position";
             isEditorLocked = true;
         }
    }
@@ -360,4 +462,3 @@
 
 </body>
 </html>
-
