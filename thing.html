@@ -67,7 +67,7 @@
   font-style: normal;
 }
 
-    #consoleContainer , #terminalOut{
+    #consoleContainer{
       all: unset;
       background: #564592;
       color: white;
@@ -78,15 +78,7 @@
       position:absolute;
       bottom: 10px;
       right: 10px;
-      height: auto;
-    }
-    #terminalOut {
-    top: 10px;
-    left: 10px;
-    height: 100px;
-    opacity: 50%;
-    background: #F5F749;
-    color: #32322C;
+      height: 64px;
     }
 
     #ConsInput {
@@ -269,6 +261,105 @@
     });
     
     
+
+
+    let isFullscreen = false;
+    let isConsoleLocked = true;
+    let isEditorLocked = true;
+    
+    const editButton = document.getElementById("consoleEditor");
+    const closeButton = document.getElementById("consoleClose");
+    const consoleUnlock = document.getElementById("consoleUnlock");
+    const info = document.getElementById("consoleHelp");
+    
+    const exec = document.getElementById("editorExecute");
+    const consoleButton = document.getElementById("editorConsole");
+    const fullscreen = document.getElementById("editorFullscreen");
+    const editorUnlock = document.getElementById("editorUnlock");
+    const info2 = document.getElementById("editorHelp");
+    
+    const htmlConsole = document.getElementById("consoleContainer");
+    const htmlEditor = document.getElementById("bigEditContainer");
+	
+
+   
+    
+    //console buttons
+    
+    editButton.onclick = function(){
+    htmlEditor.style.display = "block";
+    htmlConsole.style.display = "none";
+    editor.refresh();
+    }
+    closeButton.onclick = function(){
+    	htmlEditor.remove();
+        htmlConsole.remove();
+        throw new Error("Stopped Fragment");
+    }
+    consoleUnlock.onclick = function(){
+    	if (isConsoleLocked === true){
+    		consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+            consoleUnlock.title = "lock console position";
+            isConsoleLocked = false;
+        }else{
+        	consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+            consoleUnlock.title = "unlock console position";
+            isConsoleLocked = true;
+        }
+   	}
+    
+    
+    
+    
+    //editor buttons
+    
+    consoleButton.onclick = function(){
+    htmlConsole.style.display = "block";
+    htmlEditor.style.display = "none";
+    }
+
+	fullscreen.onclick = function(){
+
+    	if (isFullscreen === false) {
+    		htmlEditor.style.width = "100%";
+    		htmlEditor.style.height = "100%";
+    		fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
+            fullscreen.title = "windowed";
+    		htmlEditor.style.top = "0px";
+    		htmlEditor.style.left = "0px";
+    		isFullscreen = true;
+    	}else{
+
+    		htmlEditor.style.width = "500px";
+    		htmlEditor.style.height = "300px";
+    		fullscreen.innerHTML = `<span class="material-symbols-outlined">fullscreen</span>`;
+    		htmlEditor.style.top = "10px";
+    		htmlEditor.style.left = "10px";
+            fullscreen.title = "fullscreen";
+    		isFullscreen = false;
+    	}
+    }
+    
+    exec.onclick = function(){
+    	const fullCode = editor.getValue();
+        eval(fullCode);
+    }
+    editorUnlock.onclick = function(){
+    	if (isEditorLocked === true){
+    		editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+            editorUnlock.title = "lock editor position";
+            isEditorLocked = false;
+        }else{
+        	editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+            editorUnlock.title = "unlock editor position";
+            isEditorLocked = true;
+        }
+   }
+
+
+
+
+
     /*making stuff be able to be dragged*/
     
     //this first one is for the big editor-------------------------------------
@@ -365,98 +456,10 @@ function dragElement(elmnt) {
     
     
 
-    let isFullscreen = false;
-    let isConsoleLocked = true;
-    let isEditorLocked = true;
-    
-    const editButton = document.getElementById("consoleEditor");
-    const closeButton = document.getElementById("consoleClose");
-    const consoleUnlock = document.getElementById("consoleUnlock");
-    const info = document.getElementById("consoleHelp");
-    
-    const exec = document.getElementById("editorExecute");
-    const consoleButton = document.getElementById("editorConsole");
-    const fullscreen = document.getElementById("editorFullscreen");
-    const editorUnlock = document.getElementById("editorUnlock");
-    const info2 = document.getElementById("editorHelp");
-    
-    const htmlConsole = document.getElementById("consoleContainer");
-    const htmlEditor = document.getElementById("bigEditContainer");
-	
 
-   
-    
-    //console buttons
-    
-    editButton.onclick = function(){
-    htmlEditor.style.display = "block";
-    htmlConsole.style.display = "none";
-    editor.refresh();
-    }
-    closeButton.onclick = function(){
-    	htmlEditor.remove();
-        htmlConsole.remove();
-        throw new Error("Stopped Fragment");
-    }
-    consoleUnlock.onclick = function(){
-    	if (isConsoleLocked === true){
-    		consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
-            consoleUnlock.title = "lock console position";
-            isConsoleLocked = false;
-        }else{
-        	consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
-            consoleUnlock.title = "unlock console position";
-            isConsoleLocked = true;
-        }
-   	}
-    
-    
-    
-    
-    //editor buttons
-    
-    consoleButton.onclick = function(){
-    htmlConsole.style.display = "block";
-    htmlEditor.style.display = "none";
-    }
 
-	fullscreen.onclick = function(){
 
-    	if (isFullscreen === false) {
-    		htmlEditor.style.width = "100%";
-    		htmlEditor.style.height = "100%";
-    		fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
-            fullscreen.title = "windowed";
-    		htmlEditor.style.top = "0px";
-    		htmlEditor.style.left = "0px";
-    		isFullscreen = true;
-    	}else{
 
-    		htmlEditor.style.width = "500px";
-    		htmlEditor.style.height = "300px";
-    		fullscreen.innerHTML = `<span class="material-symbols-outlined">fullscreen</span>`;
-    		htmlEditor.style.top = "10px";
-    		htmlEditor.style.left = "10px";
-            fullscreen.title = "fullscreen";
-    		isFullscreen = false;
-    	}
-    }
-    
-    exec.onclick = function(){
-    	const fullCode = editor.getValue();
-        eval(fullCode);
-    }
-    editorUnlock.onclick = function(){
-    	if (isEditorLocked === true){
-    		editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
-            editorUnlock.title = "lock editor position";
-            isEditorLocked = false;
-        }else{
-        	editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
-            editorUnlock.title = "unlock editor position";
-            isEditorLocked = true;
-        }
-   }
 
   </script>
 
