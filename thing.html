@@ -79,6 +79,9 @@
       bottom: 10px;
       right: 10px;
       height: 64px;
+      
+      
+            
     }
 
     #ConsInput {
@@ -128,7 +131,7 @@
   cursor: pointer;
 }
 
-#consoleEditor, #consoleClose, #consoleUnlock, #consoleHelp{
+#consoleEditor, #consoleClose, #consoleUnlock, #consoleHelp, #maxMax, #maxClose{
   all: unset;
   background: unset;
   color: #EFF6EE;
@@ -147,7 +150,7 @@
 }
 
 
-#consoleEditor:hover, #consoleClose:hover, #consoleUnlock:hover, #consoleHelp:hover, #bigEditContainerheader button:hover{
+#consoleEditor:hover, #consoleClose:hover, #consoleUnlock:hover, #consoleHelp:hover, #bigEditContainerheader button:hover, #maxMax:hover, #maxClose:hover{
       color: #FE5D26;
       transition: 0.2s;
     }
@@ -201,8 +204,8 @@
       <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
     </h6>
     
-    <button type="button" id="consoleEditor" title="open large editor"><span class="material-symbols-outlined">code_blocks</span></button>
-    <button type="button" id="consoleClose" title="close console"><span class="material-symbols-outlined">close</span></button>
+    <button type="button" id="consoleEditor" title="open large editor"><span class="material-symbols-outlined">fullscreen</span></button>
+    <button type="button" id="consoleClose" title="close console"><span class="material-symbols-outlined">minimize</span></button>
     <button type="button" id="consoleUnlock" title="unlock console position"><span class="material-symbols-outlined">lock</span></button>
     <button type="button" id="consoleHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
 
@@ -227,7 +230,7 @@
       <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
     </h6>
         <button type="button" id="editorExecute" title="execute"><span class="material-symbols-outlined">rocket_launch</span></button>
-    <button type="button" id="editorConsole" title="open console and close editor"><span class="material-symbols-outlined">terminal</span></button>
+    <button type="button" id="editorConsole" title="open console and close editor"><span class="material-symbols-outlined">minimize</span></button>
     <button type="button" id="editorFullscreen" title="fullscreen"><span class="material-symbols-outlined">fullscreen</span></button>
     <button type="button" id="editorUnlock" title="unlock editor position"><span class="material-symbols-outlined">lock</span></button>
     <button type="button" id="editorHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
@@ -240,6 +243,20 @@
 <textarea id="bigEdit">//write your JS code here...</textarea>
 </div>
 </div>
+
+
+
+
+<div id="maxButton" style="all: unset; background: #564592; color: #EFF6EE; width: 50px; display: none; justify-content: space-between; align-items: center; padding: 5px;z-index: 999999999999999999;position:absolute;bottom: 0px;right: 0px;">
+  <button type="button" id="maxMax" title="settings" style="background: none; border: none; color: inherit; cursor: pointer;">
+    <span class="material-symbols-outlined" style="font-size: 15px;">fullscreen</span>
+  </button>
+  <button type="button" id="maxClose" title="settings" style="background: none; border: none; color: inherit; cursor: pointer;">
+    <span class="material-symbols-outlined" style="font-size: 15px;">close</span>
+  </button>
+</div>
+
+
 
   <script>
     const editor = CodeMirror.fromTextArea(document.getElementById("bigEdit"), {
@@ -266,6 +283,7 @@
     let isFullscreen = false;
     let isConsoleLocked = true;
     let isEditorLocked = true;
+    let isMinimized = false;
     
     const editButton = document.getElementById("consoleEditor");
     const closeButton = document.getElementById("consoleClose");
@@ -278,10 +296,24 @@
     const editorUnlock = document.getElementById("editorUnlock");
     const info2 = document.getElementById("editorHelp");
     
+    const maxButton = document.getElementById("maxButton");
+    const maxMax = document.getElementById("maxMax");
+    const maxClose = document.getElementById("maxClose");
+    
     const htmlConsole = document.getElementById("consoleContainer");
     const htmlEditor = document.getElementById("bigEditContainer");
 	
-
+    //max buttons
+    maxMax.onclick = function(){
+      maxButton.style.display = "none";
+      htmlConsole.style.display = "block";
+    }
+	maxClose.onclick = function(){
+    htmlConsole.remove();
+    htmlEditor.remove();
+    maxButton.remove();
+    throw new Error("Stopped Fragment");
+    }
    
     
     //console buttons
@@ -292,9 +324,9 @@
     editor.refresh();
     }
     closeButton.onclick = function(){
-    	htmlEditor.remove();
-        htmlConsole.remove();
-        throw new Error("Stopped Fragment");
+        htmlEditor.style.display = "none";
+        htmlConsole.style.display = "none";
+        maxButton.style.display = "flex";
     }
     consoleUnlock.onclick = function(){
     	if (isConsoleLocked === true){
