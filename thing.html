@@ -217,7 +217,7 @@
 
 
 
-<!--LARGE EDITOR WITH SYNTAX AND STUFF -->
+<!--LARGE EDITOR WITH SYNTAX AND STUFF__________________________________________ -->
 
 
 
@@ -237,12 +237,17 @@
 
 
   </div>
-<div id="codeMirrorCont">
+<div id="codeMirrorCont" style="display: block;">
 
 
 <textarea id="bigEdit">//write your JS code here...</textarea>
+<div id="terminalOut">outputs will go here</div>
 </div>
 </div>
+
+
+
+
 
 
 
@@ -295,6 +300,8 @@
     const fullscreen = document.getElementById("editorFullscreen");
     const editorUnlock = document.getElementById("editorUnlock");
     const info2 = document.getElementById("editorHelp");
+    const bigEdit = document.getElementById("bigEdit");
+    const terminalOut = document.getElementById("terminalOut");
     
     const maxButton = document.getElementById("maxButton");
     const maxMax = document.getElementById("maxMax");
@@ -302,6 +309,12 @@
     
     const htmlConsole = document.getElementById("consoleContainer");
     const htmlEditor = document.getElementById("bigEditContainer");
+    
+    
+    const codeMirror = document.querySelector('.CodeMirror');
+
+    
+    
 	
     //max buttons
     maxMax.onclick = function(){
@@ -359,6 +372,11 @@
             fullscreen.title = "windowed";
     		htmlEditor.style.top = "0px";
     		htmlEditor.style.left = "0px";
+            codeMirror.style.height = "50%";
+            terminalOut.style.height = "50%";
+            
+            
+            
     		isFullscreen = true;
     	}else{
 
@@ -368,6 +386,9 @@
     		htmlEditor.style.top = "10px";
     		htmlEditor.style.left = "10px";
             fullscreen.title = "fullscreen";
+            terminalOut.style.height = "0%";
+            terminalOut.style.display = "none";
+            codeMirror.style.height = "100%";
     		isFullscreen = false;
     	}
     }
