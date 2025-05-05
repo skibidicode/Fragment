@@ -1,520 +1,441 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <!-- Core CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+	<meta charset="UTF-8">
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+	<!-- Theme -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+	<!-- Hinting CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
+	<!-- Linting CSS -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
+	<!-- CodeMirror core -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+	<!-- Language mode -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+	<!-- Hinting JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/javascript-hint.min.js"></script>
+	<!-- Bracket closing -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
+	<!-- Linting core -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/javascript-lint.min.js"></script>
+	<!-- JSHint -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js"></script>
+	<style>
+	@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
+	</style>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+	<style>
+	.CodeMirror {
+		height: 100%;
+		border: 1px solid #ccc;
+		font-size: 16px;
+		width: 100%;
+	}
 
-  <!-- Theme -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+	.material-symbols-outlined {
+		font-variation-settings:
+			'FILL'0,
+			'wght'400,
+			'GRAD'0,
+			'opsz'24
+	}
 
-  <!-- Hinting CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.css">
-    <!-- Linting CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.css">
+	.major-mono-display-regular {
+		font-family: "Major Mono Display", monospace;
+		font-weight: 400;
+		font-style: normal;
+	}
 
-  <!-- CodeMirror core -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+	#consoleContainer {
+		all: unset;
+		background: #564592;
+		color: white;
+		width: 200px;
+		z-index: 99999999999999999;
+		border-radius: 5px;
+		padding: 5px;
+		position: absolute;
+		bottom: 10px;
+		right: 10px;
+		height: 64px;
+	}
 
-  <!-- Language mode -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+	#ConsInput {
+		padding: 5px;
+		height: 50%;
+		border: 0px;
+		border-radius: 5px;
+		background: #EFF6EE;
+		color: #564592;
+	}
 
-  <!-- Hinting JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/show-hint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/hint/javascript-hint.min.js"></script>
+	#ConsInput::placeholder {
+		color: #564592;
+	}
 
-  <!-- Bracket closing -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
-  
-  
-  
-  <!-- Linting core -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/lint.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/lint/javascript-lint.min.js"></script>
+	#consoleContainerheader {
+		all: unset;
+		padding: 2.5px;
+		display: flex;
+		gap: 5px;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+	}
 
-  <!-- JSHint -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.6/jshint.min.js"></script>
+	#bigEditContainerheader {
+		all: unset;
+		padding: 2.5px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 
+	#bigEditContainerheader h6 {
+		margin: 0;
+		flex: 1;
+		text-align: left;
+	}
 
+	#bigEditContainerheader button {
+		all: unset;
+		margin-left: 10px;
+		background: unset;
+		color: #EFF6EE;
+		font-family: "Lucida Console", Monospace;
+		border-radius: 2px;
+		transition: 0.2s;
+		cursor: pointer;
+	}
 
+	#consoleEditor,
+	#consoleClose,
+	#consoleUnlock,
+	#consoleHelp,
+	#maxMax,
+	#maxClose {
+		all: unset;
+		background: unset;
+		color: #EFF6EE;
+		font-family: "Lucida Console", Monospace;
+		border-radius: 2px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 5px;
+		flex: 1 1 0;
+		text-align: center;
+		min-width: 0;
+		box-sizing: border-box;
+		cursor: pointer;
+		transition: 0.2s;
+	}
 
-  
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
-</style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-  <style> 
-  
-.CodeMirror {
-  height: 100%;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  width: 100%;
-  
-}
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
-}
+	#consoleEditor:hover,
+	#consoleClose:hover,
+	#consoleUnlock:hover,
+	#consoleHelp:hover,
+	#bigEditContainerheader button:hover,
+	#maxMax:hover,
+	#maxClose:hover {
+		color: #FE5D26;
+		transition: 0.2s;
+	}
 
-  
-  .major-mono-display-regular {
-  font-family: "Major Mono Display", monospace;
-  font-weight: 400;
-  font-style: normal;
-}
+	#title {
+		all: unset;
+		font-size: 14.5px;
+		display: inline-block;
+		color: #D8B4E2;
+		font-family: 'Major Mono Display', Monospace;
+		letter-spacing: -1.5px;
+		text-align: center;
+	}
 
-    #consoleContainer{
-      all: unset;
-      background: #564592;
-      color: white;
-      width: 200px;
-      z-index: 99999999999999999;
-      border-radius: 5px;
-      padding: 5px;
-      position:absolute;
-      bottom: 10px;
-      right: 10px;
-      height: 64px;
-      
-      
-            
-    }
+	#bigEditContainer {
+		all: unset;
+		background: #564592;
+		color: white;
+		width: 500px;
+		height: 300px;
+		border-radius: 5px;
+		padding: 5px;
+		position: absolute;
+		top: 10px;
+		left: 10px;
+	}
 
-    #ConsInput {
-      padding: 5px;
-      height: 50%;
-      border: 0px;
-      border-radius: 5px;
-      background: #EFF6EE;
-      color: #564592;
-    }
+	#codeMirrorCont {
+		all: unset;
+		background: blue;
+		width: 100%;
+		height: 88%;
+		display: block;
+	}
 
-    #ConsInput::placeholder {
-      color: #564592;
-    }
-
-#consoleContainerheader{
-  all: unset;
-  padding: 2.5px;
-  display: flex;
-  gap: 5px;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  
-}
-#bigEditContainerheader {
-  all:unset;
-  padding: 2.5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#bigEditContainerheader h6 {
-  margin: 0;
-  flex: 1;
-  text-align: left;
-}
-
-#bigEditContainerheader button {
-  all: unset;
-  margin-left: 10px;
-  background: unset;
-  color: #EFF6EE;
-  font-family: "Lucida Console", Monospace;
-  border-radius: 2px;
-  transition: 0.2s;
-  cursor: pointer;
-}
-
-#consoleEditor, #consoleClose, #consoleUnlock, #consoleHelp, #maxMax, #maxClose{
-  all: unset;
-  background: unset;
-  color: #EFF6EE;
-  font-family: "Lucida Console", Monospace;
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  flex: 1 1 0;
-  text-align: center;
-  min-width: 0;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-
-#consoleEditor:hover, #consoleClose:hover, #consoleUnlock:hover, #consoleHelp:hover, #bigEditContainerheader button:hover, #maxMax:hover, #maxClose:hover{
-      color: #FE5D26;
-      transition: 0.2s;
-    }
-#title {
-  all: unset; 
-  font-size: 14.5px;
-  display: inline-block;
-  color: #D8B4E2; font-family: 'Major Mono Display', Monospace;
-  letter-spacing: -1.5px; 
-  text-align: center;
-}
-
-
-
-
-
-#bigEditContainer{
-      all: unset;
-      background: #564592;
-      color: white;
-      width: 500px;
-      height: 300px;
-      border-radius: 5px;
-      padding: 5px;
-      position:absolute;
-      top: 10px;
-      left: 10px;
-}
-
-#codeMirrorCont {
-  all: unset;
-  background: blue;
-  width: 100%;
-  height: 88%;
-  display: block;
-}
-
-
-
-#bigEdit {
-  display: none;
-}
-  </style>
+	#bigEdit {
+		display: none;
+	}
+	</style>
 </head>
+
 <body>
+	<div id="consoleContainer">
+		<div id="consoleContainerheader">
+			<h6 id="title" style="font-weight: bold;"> fragment <br>
+				<span style="letter-spacing: 8px; text-align: center;">EXEC</span>
+			</h6>
+			<button type="button" id="consoleEditor" title="open large editor"><span class="material-symbols-outlined">fullscreen</span></button>
+			<button type="button" id="consoleClose" title="close console"><span class="material-symbols-outlined">minimize</span></button>
+			<button type="button" id="consoleUnlock" title="unlock console position"><span class="material-symbols-outlined">lock</span></button>
+			<button type="button" id="consoleHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
+		</div>
+		<div id="sendBar">
+			<input type="text" id="ConsInput" autocomplete="off" placeholder="Press enter to send command...">
+		</div>
+	</div>
+	<!--LARGE EDITOR WITH SYNTAX AND STUFF__________________________________________ -->
+	<div id="bigEditContainer" style="display: none;">
+		<div id="bigEditContainerheader">
+			<h6 id="title" style="font-weight: bold;"> fragment <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
+			</h6>
+			<button type="button" id="editorExecute" title="execute"><span class="material-symbols-outlined">rocket_launch</span></button>
+			<button type="button" id="editorConsole" title="open console and close editor"><span class="material-symbols-outlined">minimize</span></button>
+			<button type="button" id="editorFullscreen" title="fullscreen"><span class="material-symbols-outlined">fullscreen</span></button>
+			<button type="button" id="editorUnlock" title="unlock editor position"><span class="material-symbols-outlined">lock</span></button>
+			<button type="button" id="editorHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
+		</div>
+		<div id="codeMirrorCont" style="display: block;">
+			<textarea id="bigEdit">//write your JS code here...</textarea>
+			<div id="terminalOut">outputs will go here</div>
+		</div>
+	</div>
+	<div id="maxButton" style="all: unset; background: #564592; color: #EFF6EE; width: 50px; display: none; justify-content: space-between; align-items: center; padding: 5px;z-index: 999999999999999999;position:absolute;bottom: 0px;right: 0px;">
+		<button type="button" id="maxMax" title="settings" style="background: none; border: none; color: inherit; cursor: pointer;">
+			<span class="material-symbols-outlined" style="font-size: 15px;">fullscreen</span>
+		</button>
+		<button type="button" id="maxClose" title="settings" style="background: none; border: none; color: inherit; cursor: pointer;">
+			<span class="material-symbols-outlined" style="font-size: 15px;">close</span>
+		</button>
+	</div>
+	<script>
+	const editor = CodeMirror.fromTextArea(document.getElementById("bigEdit"), {
+		mode: "javascript",
+		theme: "dracula",
+		lineNumbers: true,
+		autoCloseBrackets: true,
+		gutters: ["CodeMirror-lint-markers"],
+		lint: true,
+		extraKeys: {
+			"Tab": "autocomplete"
+		}
+	});
+	editor.on("inputRead", function(cm, event) {
+		if(!cm.state.completionActive && /[\w.]$/.test(event.text[0])) {
+			CodeMirror.commands.autocomplete(cm, null, {
+				completeSingle: false
+			});
+		}
+	});
+	let isFullscreen = false;
+	let isConsoleLocked = true;
+	let isEditorLocked = true;
+	let isMinimized = false;
+	const editButton = document.getElementById("consoleEditor");
+	const closeButton = document.getElementById("consoleClose");
+	const consoleUnlock = document.getElementById("consoleUnlock");
+	const info = document.getElementById("consoleHelp");
+	const exec = document.getElementById("editorExecute");
+	const consoleButton = document.getElementById("editorConsole");
+	const fullscreen = document.getElementById("editorFullscreen");
+	const editorUnlock = document.getElementById("editorUnlock");
+	const info2 = document.getElementById("editorHelp");
+	const bigEdit = document.getElementById("bigEdit");
+	const terminalOut = document.getElementById("terminalOut");
+	const maxButton = document.getElementById("maxButton");
+	const maxMax = document.getElementById("maxMax");
+	const maxClose = document.getElementById("maxClose");
+	const htmlConsole = document.getElementById("consoleContainer");
+	const htmlEditor = document.getElementById("bigEditContainer");
+	const codeMirror = document.querySelector('.CodeMirror');
+	terminalOut.style.display = "none";
+	//max buttons
+	maxMax.onclick = function() {
+		maxButton.style.display = "none";
+		htmlConsole.style.display = "block";
+	}
+	maxClose.onclick = function() {
+		htmlConsole.remove();
+		htmlEditor.remove();
+		maxButton.remove();
+		throw new Error("Stopped Fragment");
+	}
+	//console buttons
+	editButton.onclick = function() {
+		htmlEditor.style.display = "block";
+		htmlConsole.style.display = "none";
+		editor.refresh();
+	}
+	closeButton.onclick = function() {
+		htmlEditor.style.display = "none";
+		htmlConsole.style.display = "none";
+		maxButton.style.display = "flex";
+	}
+	consoleUnlock.onclick = function() {
+		if(isConsoleLocked === true) {
+			consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+			consoleUnlock.title = "lock console position";
+			isConsoleLocked = false;
+		} else {
+			consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+			consoleUnlock.title = "unlock console position";
+			isConsoleLocked = true;
+		}
+	}
+	//editor buttons
+	consoleButton.onclick = function() {
+		htmlConsole.style.display = "block";
+		htmlEditor.style.display = "none";
+	}
+	fullscreen.onclick = function() {
+		if(isFullscreen === false) {
+			htmlEditor.style.width = "100%";
+			htmlEditor.style.height = "100%";
+			fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
+			fullscreen.title = "windowed";
+			htmlEditor.style.top = "0px";
+			htmlEditor.style.left = "0px";
+			codeMirror.style.height = "50%";
+			terminalOut.style.height = "50%";
+			isFullscreen = true;
+		} else {
+			htmlEditor.style.width = "500px";
+			htmlEditor.style.height = "300px";
+			fullscreen.innerHTML = `<span class="material-symbols-outlined">fullscreen</span>`;
+			htmlEditor.style.top = "10px";
+			htmlEditor.style.left = "10px";
+			fullscreen.title = "fullscreen";
+			terminalOut.style.height = "0%";
+			terminalOut.style.display = "none";
+			codeMirror.style.height = "100%";
+			isFullscreen = false;
+		}
+	}
+	exec.onclick = function() {
+		const fullCode = editor.getValue();
+		eval(fullCode);
+	}
+	editorUnlock.onclick = function() {
+		if(isEditorLocked === true) {
+			editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
+			editorUnlock.title = "lock editor position";
+			isEditorLocked = false;
+		} else {
+			editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
+			editorUnlock.title = "unlock editor position";
+			isEditorLocked = true;
+		}
+	}
+	/*making stuff be able to be dragged*/
+	//this first one is for the big editor-------------------------------------
+	// Make the DIV element draggable:
+	dragElement(document.getElementById("bigEditContainer"));
 
-<div id="consoleContainer">
-  <div id="consoleContainerheader">
-    <h6 id="title" style="font-weight: bold;">
-      fragment <br>
-      <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
-    </h6>
-    
-    <button type="button" id="consoleEditor" title="open large editor"><span class="material-symbols-outlined">fullscreen</span></button>
-    <button type="button" id="consoleClose" title="close console"><span class="material-symbols-outlined">minimize</span></button>
-    <button type="button" id="consoleUnlock" title="unlock console position"><span class="material-symbols-outlined">lock</span></button>
-    <button type="button" id="consoleHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
+	function dragElement(elmnt) {
+		var pos1 = 0,
+			pos2 = 0,
+			pos3 = 0,
+			pos4 = 0;
+		if(document.getElementById(elmnt.id + "header")) {
+			// if present, the header is where you move the DIV from:
+			document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+		} else {
+			// otherwise, move the DIV from anywhere inside the DIV:
+			elmnt.onmousedown = dragMouseDown;
+		}
 
-  </div>
-  <div id="sendBar"> 
-  <input type="text" id="ConsInput" autocomplete="off" placeholder="Press enter to send command...">
-  </div>
-</div>
+		function dragMouseDown(e) {
+			e = e || window.event;
+			e.preventDefault();
+			// get the mouse cursor position at startup:
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+			document.onmouseup = closeDragElement;
+			// call a function whenever the cursor moves:
+			document.onmousemove = elementDrag;
+		}
 
+		function elementDrag(e) {
+			e = e || window.event;
+			e.preventDefault();
+			// calculate the new cursor position:
+			pos1 = pos3 - e.clientX;
+			pos2 = pos4 - e.clientY;
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+			// set the element's new position:
+			elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+			elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+		}
 
+		function closeDragElement() {
+			// stop moving when mouse button is released:
+			document.onmouseup = null;
+			document.onmousemove = null;
+		}
+	}
+	//----------------------------this is for console drag--------------
+	// Make the DIV element draggable:
+	dragElement(document.getElementById("consoleContainer"));
 
-<!--LARGE EDITOR WITH SYNTAX AND STUFF__________________________________________ -->
+	function dragElement(elmnt) {
+		var pos1 = 0,
+			pos2 = 0,
+			pos3 = 0,
+			pos4 = 0;
+		if(document.getElementById(elmnt.id + "header")) {
+			// if present, the header is where you move the DIV from:
+			document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+		} else {
+			// otherwise, move the DIV from anywhere inside the DIV:
+			elmnt.onmousedown = dragMouseDown;
+		}
 
+		function dragMouseDown(e) {
+			e = e || window.event;
+			e.preventDefault();
+			// get the mouse cursor position at startup:
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+			document.onmouseup = closeDragElement;
+			// call a function whenever the cursor moves:
+			document.onmousemove = elementDrag;
+		}
 
+		function elementDrag(e) {
+			e = e || window.event;
+			e.preventDefault();
+			// calculate the new cursor position:
+			pos1 = pos3 - e.clientX;
+			pos2 = pos4 - e.clientY;
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+			// set the element's new position:
+			elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+			elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+		}
 
-
-
-<div id="bigEditContainer" style="display: none;">
-  <div id="bigEditContainerheader">
-    <h6 id="title" style="font-weight: bold;">
-      fragment
-      <span style="letter-spacing: 8px; text-align: center;">EXEC</span>
-    </h6>
-        <button type="button" id="editorExecute" title="execute"><span class="material-symbols-outlined">rocket_launch</span></button>
-    <button type="button" id="editorConsole" title="open console and close editor"><span class="material-symbols-outlined">minimize</span></button>
-    <button type="button" id="editorFullscreen" title="fullscreen"><span class="material-symbols-outlined">fullscreen</span></button>
-    <button type="button" id="editorUnlock" title="unlock editor position"><span class="material-symbols-outlined">lock</span></button>
-    <button type="button" id="editorHelp" title="settings"><span class="material-symbols-outlined">settings</span></button>
-
-
-  </div>
-<div id="codeMirrorCont" style="display: block;">
-
-
-<textarea id="bigEdit">//write your JS code here...</textarea>
-<div id="terminalOut">outputs will go here</div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-<div id="maxButton" style="all: unset; background: #564592; color: #EFF6EE; width: 50px; display: none; justify-content: space-between; align-items: center; padding: 5px;z-index: 999999999999999999;position:absolute;bottom: 0px;right: 0px;">
-  <button type="button" id="maxMax" title="settings" style="background: none; border: none; color: inherit; cursor: pointer;">
-    <span class="material-symbols-outlined" style="font-size: 15px;">fullscreen</span>
-  </button>
-  <button type="button" id="maxClose" title="settings" style="background: none; border: none; color: inherit; cursor: pointer;">
-    <span class="material-symbols-outlined" style="font-size: 15px;">close</span>
-  </button>
-</div>
-
-
-
-  <script>
-    const editor = CodeMirror.fromTextArea(document.getElementById("bigEdit"), {
-      mode: "javascript",
-      theme: "dracula",
-      lineNumbers: true,
-      autoCloseBrackets: true,
-      gutters: ["CodeMirror-lint-markers"],
-      lint: true,
-      extraKeys: {
-        "Tab": "autocomplete"
-      }
-    });
-
-    editor.on("inputRead", function(cm, event) {
-      if (!cm.state.completionActive && /[\w.]$/.test(event.text[0])) {
-        CodeMirror.commands.autocomplete(cm, null, { completeSingle: false });
-      }
-    });
-    
-    
-
-
-    let isFullscreen = false;
-    let isConsoleLocked = true;
-    let isEditorLocked = true;
-    let isMinimized = false;
-    
-    const editButton = document.getElementById("consoleEditor");
-    const closeButton = document.getElementById("consoleClose");
-    const consoleUnlock = document.getElementById("consoleUnlock");
-    const info = document.getElementById("consoleHelp");
-    
-    const exec = document.getElementById("editorExecute");
-    const consoleButton = document.getElementById("editorConsole");
-    const fullscreen = document.getElementById("editorFullscreen");
-    const editorUnlock = document.getElementById("editorUnlock");
-    const info2 = document.getElementById("editorHelp");
-    const bigEdit = document.getElementById("bigEdit");
-    const terminalOut = document.getElementById("terminalOut");
-    
-    const maxButton = document.getElementById("maxButton");
-    const maxMax = document.getElementById("maxMax");
-    const maxClose = document.getElementById("maxClose");
-    
-    const htmlConsole = document.getElementById("consoleContainer");
-    const htmlEditor = document.getElementById("bigEditContainer");
-    
-    
-    const codeMirror = document.querySelector('.CodeMirror');
-
-    
-    
-	
-    //max buttons
-    maxMax.onclick = function(){
-      maxButton.style.display = "none";
-      htmlConsole.style.display = "block";
-    }
-	maxClose.onclick = function(){
-    htmlConsole.remove();
-    htmlEditor.remove();
-    maxButton.remove();
-    throw new Error("Stopped Fragment");
-    }
-   
-    
-    //console buttons
-    
-    editButton.onclick = function(){
-    htmlEditor.style.display = "block";
-    htmlConsole.style.display = "none";
-    editor.refresh();
-    }
-    closeButton.onclick = function(){
-        htmlEditor.style.display = "none";
-        htmlConsole.style.display = "none";
-        maxButton.style.display = "flex";
-    }
-    consoleUnlock.onclick = function(){
-    	if (isConsoleLocked === true){
-    		consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
-            consoleUnlock.title = "lock console position";
-            isConsoleLocked = false;
-        }else{
-        	consoleUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
-            consoleUnlock.title = "unlock console position";
-            isConsoleLocked = true;
-        }
-   	}
-    
-    
-    
-    
-    //editor buttons
-    
-    consoleButton.onclick = function(){
-    htmlConsole.style.display = "block";
-    htmlEditor.style.display = "none";
-    }
-
-	fullscreen.onclick = function(){
-
-    	if (isFullscreen === false) {
-    		htmlEditor.style.width = "100%";
-    		htmlEditor.style.height = "100%";
-    		fullscreen.innerHTML = `<span class="material-symbols-outlined">close_fullscreen</span>`;
-            fullscreen.title = "windowed";
-    		htmlEditor.style.top = "0px";
-    		htmlEditor.style.left = "0px";
-            codeMirror.style.height = "50%";
-            terminalOut.style.height = "50%";
-            
-            
-            
-    		isFullscreen = true;
-    	}else{
-
-    		htmlEditor.style.width = "500px";
-    		htmlEditor.style.height = "300px";
-    		fullscreen.innerHTML = `<span class="material-symbols-outlined">fullscreen</span>`;
-    		htmlEditor.style.top = "10px";
-    		htmlEditor.style.left = "10px";
-            fullscreen.title = "fullscreen";
-            terminalOut.style.height = "0%";
-            terminalOut.style.display = "none";
-            codeMirror.style.height = "100%";
-    		isFullscreen = false;
-    	}
-    }
-    
-    exec.onclick = function(){
-    	const fullCode = editor.getValue();
-        eval(fullCode);
-    }
-    editorUnlock.onclick = function(){
-    	if (isEditorLocked === true){
-    		editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock_open</span>`;
-            editorUnlock.title = "lock editor position";
-            isEditorLocked = false;
-        }else{
-        	editorUnlock.innerHTML = `<span class="material-symbols-outlined">lock</span>`;
-            editorUnlock.title = "unlock editor position";
-            isEditorLocked = true;
-        }
-   }
-
-
-
-
-
-    /*making stuff be able to be dragged*/
-    
-    //this first one is for the big editor-------------------------------------
-    
-    // Make the DIV element draggable:
-dragElement(document.getElementById("bigEditContainer"));
-
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    // if present, the header is where you move the DIV from:
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
-
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
-
-  function closeDragElement() {
-    // stop moving when mouse button is released:
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-    
-    
-//----------------------------this is for console drag--------------
-// Make the DIV element draggable:
-dragElement(document.getElementById("consoleContainer"));
-
-function dragElement(elmnt) {
-  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-  if (document.getElementById(elmnt.id + "header")) {
-    // if present, the header is where you move the DIV from:
-    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-  } else {
-    // otherwise, move the DIV from anywhere inside the DIV:
-    elmnt.onmousedown = dragMouseDown;
-  }
-
-  function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-  }
-
-  function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-  }
-
-  function closeDragElement() {
-    // stop moving when mouse button is released:
-    document.onmouseup = null;
-    document.onmousemove = null;
-  }
-}
-    
-    
-
-
-
-
-
-
-  </script>
-
+		function closeDragElement() {
+			// stop moving when mouse button is released:
+			document.onmouseup = null;
+			document.onmousemove = null;
+		}
+	}
+	</script>
 </body>
+
 </html>
