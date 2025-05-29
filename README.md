@@ -1,7 +1,7 @@
-todo
-
-bypass firewall
-make output as a separate UI (draggable, magnetic, resizable)
-make actual nice inspect element (element selector, syntax highlighting; basically remake the google one)
-implement code part
-make large js editor w syntax highlighting
+a javascript editor I'm working on which will (once finished) run in a browser via uBlock Origin's userResourcesLocation and custom filter functionality. Currently, I am in the development phase, so the project is still written in HTML, CSS, and JS. Eventually, I will re-make the code once everything works into a single JavaScript file that will inject the code into the site and allow javascript to be easily executed. 
+<br>
+I made this because my school does not permit devtools on any of the school-admitted computers. I believe this is (while probably a good idea for the school given all of the zillion ways people find to break school owned tools) not fair for some. I like being able to see stuff on a website, and I love to mess with stuff. Not being able to do this is not only giving me less opportunities to learn how to do things that may be more useful to learn than standard curriculum material, but also making it more difficult to browse the internet. With devtools, anyone can very easily remove a paywall, and for a school that does not provide accounts for very useful sources like the NY Times, Washington Post, and so many more. Being able to do this type of stuff has a legitimate purpose other than screwing with stuff until it crashes and then laughing about it.
+<br>
+One small thing to keep in mind while using this is that it executes code via eval(), which can be a little weird sometimes. 
+<br>
+When I finish the project, I'll upload documentation on how to use the tool.
