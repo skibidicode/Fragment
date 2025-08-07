@@ -340,6 +340,7 @@
 			isEditorLocked = true;
 		}
 	}
+		
 	/*making stuff be able to be dragged*/
 	//this first one is for the big editor-------------------------------------
 	// Make the DIV element draggable:
@@ -359,6 +360,16 @@
 		}
 
 		function dragMouseDown(e) {
+            if (
+        (elmnt.id === "bigEditContainer" && isEditorLocked) ||
+        (elmnt.id === "consoleContainer" && isConsoleLocked)
+    ) {
+        return; // Don't allow drag
+    }
+        
+        
+        
+        
 			e = e || window.event;
 			e.preventDefault();
 			// get the mouse cursor position at startup:
@@ -406,6 +417,13 @@
 		}
 
 		function dragMouseDown(e) {
+        
+            if (
+        (elmnt.id === "bigEditContainer" && isEditorLocked) ||
+        (elmnt.id === "consoleContainer" && isConsoleLocked)
+    ) {
+        return; // Don't allow drag
+    }
 			e = e || window.event;
 			e.preventDefault();
 			// get the mouse cursor position at startup:
@@ -435,6 +453,7 @@
 			document.onmousemove = null;
 		}
 	}
+		
 	</script>
 </body>
 
